@@ -1,11 +1,13 @@
 export const theme = {
   colors: {
-    primary: '#A14EBF',
-    secondary: '#45ca9e',
-    white: '#FFFFFF',
-    black: '#111111',
-    textPrimary: '#111111',
-    textSecondary: '#5f5f5f',
-    error: '#e40303',
+    darkmode: {
+      colorTone1: '#d7dadc',
+      colorTone2: '#818384',
+      colorTone3: '#565758',
+      colorTone4: '#3a3a3c',
+      colorTone5: '#272729',
+      colorTone6: '#1a1a1b',
+      colorTone7: '#121213',
+    },
   },
 };
