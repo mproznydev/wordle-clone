@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import * as React from 'react';
 import styled from 'styled-components';
 
-const word = 'HELLO';
+const word = 'MICRO';
 
 const Wrapper = styled.div`
   display: flex;
@@ -17,14 +17,16 @@ const Row = styled.div`
   display: flex;
 `;
 
-const Cell = styled.div<{ backgroundColor?: string }>`
+const Cell = styled.div<{ letterStatus?: string; isCurrentCell?: boolean }>`
   width: 70px;
   height: 70px;
   border: 2px solid ${({ theme }) => theme.colors.darkmode.colorTone3};
+  border: ${({ theme, isCurrentCell }) =>
+    isCurrentCell ? `2px solid ${theme.colors.darkmode.colorTone2}` : `2px solid ${theme.colors.darkmode.colorTone3}`};
   margin: 0.15rem;
   color: ${({ theme }) => theme.colors.darkmode.colorTone1};
   font-size: 2rem;
-  background-color: ${({ backgroundColor }) => backgroundColor};
+  background-color: ${({ letterStatus }) => letterStatus};
   font-weight: 600;
   text-align: center;
   vertical-align: middle;
@@ -43,10 +45,7 @@ const Cell = styled.div<{ backgroundColor?: string }>`
     }
   }
 `;
-const GridWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
+
 const Title = styled.h1`
   color: #d7dadc;
   margin: 1rem;
@@ -79,7 +78,7 @@ const Grid = ({ index, history, currentAttempt }: GridProps) => {
     return (
       <Row>
         {Array.from({ length: 5 }).map((_, i) => (
-          <Cell key={i} backgroundColor={letterStatus(i)}>
+          <Cell key={i} letterStatus={letterStatus(i)}>
             {history[index][i]}
           </Cell>
         ))}
@@ -88,9 +87,14 @@ const Grid = ({ index, history, currentAttempt }: GridProps) => {
   } else if (current) {
     return (
       <Row>
-        {Array.from({ length: 5 }).map((_, i) => (
-          <Cell key={i}>{currentAttempt[i]}</Cell>
-        ))}
+        {Array.from({ length: 5 }).map((_, i) => {
+          const isCurrentCell = i < currentAttempt.length;
+          return (
+            <Cell key={i} isCurrentCell={isCurrentCell}>
+              {currentAttempt[i]}
+            </Cell>
+          );
+        })}
       </Row>
     );
   } else {
@@ -124,6 +128,11 @@ function App() {
     if (e.key === 'Enter') {
       if (currentAttempt.length === 5) {
         setHistory([...history, currentAttempt]);
+        if (currentAttempt === word) {
+          setTimeout(() => {
+            alert('you won');
+          }, 0);
+        }
         setCurrentAttempt('');
       }
     }
